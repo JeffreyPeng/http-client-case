@@ -43,7 +43,11 @@ public class HttpPoolUtil {
         idleConnectionMonitorThread = new IdleConnectionMonitorThread(poolConnManager);
         idleConnectionMonitorThread.start();
         requestConfig = configBuilder.build();
-        httpClientBuilder = HttpClients.custom().setConnectionManager(poolConnManager).setDefaultRequestConfig(requestConfig);
+        httpClientBuilder = HttpClients.custom()
+                // TODO 设置后就可以关闭 httpClient 对象
+                .setConnectionManagerShared(true)
+                .setConnectionManager(poolConnManager)
+                .setDefaultRequestConfig(requestConfig);
         log.info(">>>>>>>>>>> PoolingHttpClientConnectionManager初始化成功 >>>>>>>>>>>");
     }
 
